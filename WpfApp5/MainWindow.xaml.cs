@@ -63,12 +63,11 @@ namespace WpfApp5
             try 
             {
                 string fl = $"{fullpath}{filename}.rtf";
-                //File.Create(fl);
-                using (FileStream fw = new FileStream(fl, FileMode.Create))
+                TextRange range = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
+                using (var fs = File.Create(fl))
                 {
-                    byte[] info = new UTF8Encoding(true).GetBytes("");
-                    fw.Write(info, 0, info.Length);
-                    fw.Close();
+                    range.Save(fs, System.Windows.DataFormats.Rtf);
+                    fs.Close();
                 }
                 var dir = new System.IO.DirectoryInfo(fullpath);
                 FileInfo[] files = dir.GetFiles("*.*");
@@ -87,7 +86,6 @@ namespace WpfApp5
             try 
             {
                 string fl = $"{fullpath}{filename}";
-                //FileStream fileStream = new FileStream(fl, FileMode.OpenOrCreate);
                 TextRange range = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
                 using (FileStream fs = new FileStream(fl, FileMode.OpenOrCreate))
                 {
