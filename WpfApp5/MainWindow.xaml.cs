@@ -75,19 +75,12 @@ namespace WpfApp5
             //var dir = new System.IO.DirectoryInfo(fullpath);
             //FileInfo[] files = dir.GetFiles(filename);
             //listBox.Items.Remove(files);
-            int del = this.listBox.SelectedIndex;
-            this.listBox.Items.RemoveAt(del);
-            int kol = listBox.Items.Count;
-            System.IO.FileInfo fi =
-                    new System.IO.FileInfo(fl);
-            try
+            listBox.ItemsSource = employees;
+            if (listBox.SelectedIndex >= 0)
             {
-                fi.Delete();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Ошибка удаления файла.\n" +
-                        ex.ToString(), "Monitor Systems");
+                int Ind = listBox.SelectedIndex;
+                listBox.SelectedIndex = -1;
+                listBox.Items.RemoveAt(Ind);
             }
         }
 
@@ -119,5 +112,10 @@ namespace WpfApp5
             string itm = listBox.SelectedItem.ToString();
             OpenFile(itm);
         }
+
+        //private void listBox_Selected(object sender, RoutedEventArgs e)
+        //{
+
+        //}
     }
 }
