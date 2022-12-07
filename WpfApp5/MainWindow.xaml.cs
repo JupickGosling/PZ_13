@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Path = System.IO.Path;
 
 namespace WpfApp5
 {
@@ -28,8 +30,6 @@ namespace WpfApp5
         public MainWindow()
         {
             InitializeComponent();
-            //string path = Convert.ToString($@"data/");
-            //string fullpath = System.IO.Path.GetFullPath(path);
             var dir = new System.IO.DirectoryInfo(fullpath);
             FileInfo[] files = dir.GetFiles("*.*");
             listBox.ItemsSource = files;
@@ -37,47 +37,58 @@ namespace WpfApp5
 
         public void OpenFile(string filename)
         {
-            //string path = Convert.ToString($@"data/file1.rtf");
-            //string fullpath = System.IO.Path.GetFullPath(path);
             string fl = $"{fullpath}{filename}";
-            FileStream fileStream = new FileStream(fl, FileMode.Open);
             TextRange range = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
-            range.Load(fileStream, DataFormats.Text);
+            using (var fs = File.OpenRead(fl))
+            {
+                if (fl.ToLower().EndsWith(".rtf"))
+                    range.Load(fs, DataFormats.Rtf);
+                else if (fl.ToLower().EndsWith(".txt"))
+                    range.Load(fs, DataFormats.Text);
+                else
+                    range.Load(fs, DataFormats.Xaml);
+            }
         }
 
         public void CreateFile(string filename)
         {
-            //string path = Convert.ToString($@"data/");
-            //string fullpath = System.IO.Path.GetFullPath(path);
             string fl = $"{fullpath}{filename}.rtf";
             File.Create(fl);
             var dir = new System.IO.DirectoryInfo(fullpath);
             FileInfo[] files = dir.GetFiles("*.*");
             listBox.ItemsSource = files;
             listBox.DisplayMemberPath = "Name";
-            //FileStream fileStream = new FileStream(System.IO.Path.GetFullPath(path), FileMode.Create);
-            //TextRange range = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
-            //range.Save(fileStream, DataFormats.Rtf);
         }
 
-        public void SaveFile()
+        public void SaveFile(string filename)
         {
-            SaveFileDialog dlg = new SaveFileDialog();
-            dlg.Filter = "Plain Text File (*.txt)|*.txt|All files (*.*)|*.*";
-            if (dlg.ShowDialog() == true)
-            {
-                FileStream fileStream = new FileStream(dlg.FileName, FileMode.OpenOrCreate);
-                TextRange range = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
-                range.Save(fileStream, DataFormats.Text);
-            }
+            string fl = $"{fullpath}{filename}";
+            FileStream fileStream = new FileStream(fl, FileMode.OpenOrCreate);
+            TextRange range = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
+            range.Save(fileStream, DataFormats.Rtf);
         }
 
         public void DeleteFile(string filename)
         {
-            //string path = Convert.ToString($@"data/");
-            //string fullpath = System.IO.Path.GetFullPath(path);
-            string fl = $"{fullpath}{filename}.rtf";
+            string fl = $"{fullpath}{filename}";
             File.Delete(fl);
+            //var dir = new System.IO.DirectoryInfo(fullpath);
+            //FileInfo[] files = dir.GetFiles(filename);
+            //listBox.Items.Remove(files);
+            int del = this.listBox.SelectedIndex;
+            this.listBox.Items.RemoveAt(del);
+            int kol = listBox.Items.Count;
+            System.IO.FileInfo fi =
+                    new System.IO.FileInfo(fl);
+            try
+            {
+                fi.Delete();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка удаления файла.\n" +
+                        ex.ToString(), "Monitor Systems");
+            }
         }
 
         private void newFileMenuItem_Click(object sender, RoutedEventArgs e)
@@ -90,20 +101,23 @@ namespace WpfApp5
                 CreateFile(filename);
             }
         }
+        private void saveFileMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            string itm = listBox.SelectedItem.ToString();
+
+            SaveFile(itm);
+        }
         private void delFileMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            //string filename;
+            string itm = listBox.SelectedItem.ToString();
 
-            //DeleteFile(filename);
+            DeleteFile(itm);
         }
 
-        private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void listBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var dir = new System.IO.DirectoryInfo(fullpath);
-            FileInfo[] files = dir.GetFiles("*.*");
-            ListBoxItem itm = new ListBoxItem();
-            itm.Tag = files;
-            OpenFile(itm.Tag.ToString());
+            string itm = listBox.SelectedItem.ToString();
+            OpenFile(itm);
         }
     }
 }
