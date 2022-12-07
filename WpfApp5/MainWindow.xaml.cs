@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -38,7 +39,7 @@ namespace WpfApp5
         {
             //string path = Convert.ToString($@"data/file1.rtf");
             //string fullpath = System.IO.Path.GetFullPath(path);
-            string fl = $"{fullpath}";
+            string fl = $"{fullpath}{filename}";
             FileStream fileStream = new FileStream(fl, FileMode.Open);
             TextRange range = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
             range.Load(fileStream, DataFormats.Text);
@@ -94,6 +95,19 @@ namespace WpfApp5
             //string filename;
 
             //DeleteFile(filename);
+        }
+
+        private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string[] file_list = Directory.GetFiles(fullpath, "*.*");
+            foreach (string filePath in file_list)
+            {
+                ListBoxItem itm = new ListBoxItem();
+                itm.Content = System.IO.Path.GetFileName(filePath);
+                itm.Tag = filePath;
+            }
+            ListBoxItem fi = (ListBoxItem)listBox.SelectedItem;
+            OpenFile(fi.ToString());
         }
     }
 }
