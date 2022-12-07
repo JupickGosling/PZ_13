@@ -37,35 +37,57 @@ namespace WpfApp5
 
         public void OpenFile(string filename)
         {
-            string fl = $"{fullpath}{filename}";
-            TextRange range = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
-            using (var fs = File.OpenRead(fl))
+            try
             {
-                if (fl.ToLower().EndsWith(".rtf"))
-                    range.Load(fs, DataFormats.Rtf);
-                else if (fl.ToLower().EndsWith(".txt"))
-                    range.Load(fs, DataFormats.Text);
-                else
-                    range.Load(fs, DataFormats.Xaml);
+                string fl = $"{fullpath}{filename}";
+                TextRange range = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
+                using (var fs = File.OpenRead(fl))
+                {
+                    if (fl.ToLower().EndsWith(".rtf"))
+                        range.Load(fs, System.Windows.DataFormats.Rtf);
+                    else if (fl.ToLower().EndsWith(".txt"))
+                        range.Load(fs, System.Windows.DataFormats.Text);
+                    else
+                        range.Load(fs, System.Windows.DataFormats.Xaml);
+                }
+            }
+            catch (Exception e) 
+            {
+                MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         public void CreateFile(string filename)
         {
-            string fl = $"{fullpath}{filename}.rtf";
-            File.Create(fl);
-            var dir = new System.IO.DirectoryInfo(fullpath);
-            FileInfo[] files = dir.GetFiles("*.*");
-            listBox.ItemsSource = files;
-            listBox.DisplayMemberPath = "Name";
+            try 
+            {
+                string fl = $"{fullpath}{filename}.rtf";
+                File.Create(fl);
+                var dir = new System.IO.DirectoryInfo(fullpath);
+                FileInfo[] files = dir.GetFiles("*.*");
+                listBox.ItemsSource = files;
+                listBox.DisplayMemberPath = "Name";
+                MessageBox.Show($"Файл {filename} был создан!");
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void SaveFile(string filename)
         {
-            string fl = $"{fullpath}{filename}";
-            FileStream fileStream = new FileStream(fl, FileMode.OpenOrCreate);
-            TextRange range = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
-            range.Save(fileStream, DataFormats.Rtf);
+            try 
+            {
+                string fl = $"{fullpath}{filename}";
+                FileStream fileStream = new FileStream(fl, FileMode.OpenOrCreate);
+                TextRange range = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
+                range.Save(fileStream, DataFormats.Rtf);
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error); 
+            }
         }
 
         public void DeleteFile(string filename)
