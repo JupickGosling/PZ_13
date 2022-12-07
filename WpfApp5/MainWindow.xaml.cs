@@ -28,6 +28,16 @@ namespace WpfApp5
             InitializeComponent();
         }
 
+        public void OpenFile(string filename)
+        {
+            string path = Convert.ToString($@"data/file1.rtf");
+            string fullpath = System.IO.Path.GetFullPath(path);
+            string fl = $"{fullpath}";
+            FileStream fileStream = new FileStream(fl, FileMode.Open);
+            TextRange range = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
+            range.Load(fileStream, DataFormats.Text);
+        }
+
         public void CreateFile(string filename)
         {
             string path = Convert.ToString($@"data/");
@@ -71,13 +81,9 @@ namespace WpfApp5
         }
         private void delFileMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            string filename;
-            CreateFileWindow createFileWindow = new CreateFileWindow();
-            if (createFileWindow.ShowDialog() == true)
-            {
-                filename = createFileWindow.FileName;
-                CreateFile(filename);
-            }
+            //string filename;
+
+            //DeleteFile(filename);
         }
     }
 }
