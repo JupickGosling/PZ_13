@@ -51,16 +51,12 @@ namespace WpfApp5
             }
         }
 
-        public void DeleteFile()
+        public void DeleteFile(string filename)
         {
-            OpenFileDialog dlg = new OpenFileDialog();
-            dlg.Filter = "Plain Text File (*.txt)|*.txt|All files (*.*)|*.*";
-            if (dlg.ShowDialog() == true)
-            {
-                FileStream fileStream = new FileStream(dlg.FileName, FileMode.Open);
-                TextRange range = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
-                range.Load(fileStream, DataFormats.Text);
-            }
+            string path = Convert.ToString($@"data/");
+            string fullpath = System.IO.Path.GetFullPath(path);
+            string fl = $"{fullpath}{filename}.rtf";
+            File.Delete(fl);
         }
 
         private void newFileMenuItem_Click(object sender, RoutedEventArgs e)
