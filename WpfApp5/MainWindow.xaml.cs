@@ -69,5 +69,15 @@ namespace WpfApp5
                 CreateFile(filename);
             }
         }
+        private void delFileMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            string filename;
+            CreateFileWindow createFileWindow = new CreateFileWindow();
+            if (createFileWindow.ShowDialog() == true)
+            {
+                filename = createFileWindow.FileName;
+                CreateFile(filename);
+            }
+        }
     }
 }

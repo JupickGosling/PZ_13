@@ -11,8 +11,8 @@
             <Menu>
                 <MenuItem Header="File">
                     <MenuItem Header="New Project" Click="newFileMenuItem_Click"/>
-                    <MenuItem Header="Open Project"/>
                     <MenuItem Header="Save Project"/>
+                    <MenuItem Header="Delete Project"/>
                 </MenuItem>
                 <MenuItem Header="Sample" >
                     <MenuItem Header="Create Project"/>
