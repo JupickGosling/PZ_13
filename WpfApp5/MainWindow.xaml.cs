@@ -75,7 +75,6 @@ namespace WpfApp5
             //var dir = new System.IO.DirectoryInfo(fullpath);
             //FileInfo[] files = dir.GetFiles(filename);
             //listBox.Items.Remove(files);
-            listBox.ItemsSource = employees;
             if (listBox.SelectedIndex >= 0)
             {
                 int Ind = listBox.SelectedIndex;
