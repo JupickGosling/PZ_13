@@ -15,8 +15,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-//НАСТРОЙТЕ GITHUB В КОЛЛЕДЖЕ ОКЭИ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 namespace WpfApp5
 {
     /// <summary>
