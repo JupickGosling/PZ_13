@@ -49,6 +49,7 @@ namespace WpfApp5
                         range.Load(fs, System.Windows.DataFormats.Text);
                     else
                         range.Load(fs, System.Windows.DataFormats.Xaml);
+                    fs.Close();
                 }
             }
             catch (Exception e) 
