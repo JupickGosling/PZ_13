@@ -1,0 +1,42 @@
+﻿<Window x:Class="WpfApp5.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp5"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" MinHeight="20">
+            <Menu>
+                <MenuItem Header="File">
+                    <MenuItem Header="New Project" Click="newFileMenuItem_Click"/>
+                    <MenuItem Header="Open Project"/>
+                    <MenuItem Header="Save Project"/>
+                </MenuItem>
+                <MenuItem Header="Sample" >
+                    <MenuItem Header="Create Project"/>
+                    <MenuItem Header="Load Project"/>
+                </MenuItem>
+                <MenuItem Header="About">
+                    <MenuItem Header="About the program"/>
+                    <MenuItem Header="About the author"/>
+                </MenuItem>
+            </Menu>
+            <WrapPanel MinHeight="20">
+                <ToggleButton Command="EditingCommands.ToggleBold" Name="btnBold">
+                    <Image Source="Images/bold.png" Width="15" Height="15" />
+                </ToggleButton>
+                <ToggleButton Command="EditingCommands.ToggleItalic" Name="btnItalic">
+                    <Image Source="Images/italic.png" Width="16" Height="16" />
+                </ToggleButton>
+                <ToggleButton Command="EditingCommands.ToggleUnderline" Name="btnUnderline">
+                    <Image Source="Images/underline.png" Width="16" Height="16" />
+                </ToggleButton>
+            </WrapPanel>
+        </StackPanel>
+        <StatusBar DockPanel.Dock="Bottom" Margin="0,10,0,0" Width="800"></StatusBar>
+        <ListBox DockPanel.Dock="Left" Width="350"></ListBox>
+        <RichTextBox Name="rtbEditor" DockPanel.Dock="Right" Width="450" AcceptsReturn="True" AcceptsTab="True" SpellCheck.IsEnabled="True"/>
+    </DockPanel>
+</Window>
