@@ -22,16 +22,22 @@ namespace WpfApp5
     /// </summary>
     public partial class MainWindow : Window
     {
-        
+        public static string path = Convert.ToString($@"data/");
+        public static string fullpath = System.IO.Path.GetFullPath(path);
         public MainWindow()
         {
             InitializeComponent();
+            //string path = Convert.ToString($@"data/");
+            //string fullpath = System.IO.Path.GetFullPath(path);
+            var dir = new System.IO.DirectoryInfo(fullpath);
+            FileInfo[] files = dir.GetFiles("*.*");
+            listBox.ItemsSource = files;
         }
 
         public void OpenFile(string filename)
         {
-            string path = Convert.ToString($@"data/file1.rtf");
-            string fullpath = System.IO.Path.GetFullPath(path);
+            //string path = Convert.ToString($@"data/file1.rtf");
+            //string fullpath = System.IO.Path.GetFullPath(path);
             string fl = $"{fullpath}";
             FileStream fileStream = new FileStream(fl, FileMode.Open);
             TextRange range = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
@@ -40,10 +46,14 @@ namespace WpfApp5
 
         public void CreateFile(string filename)
         {
-            string path = Convert.ToString($@"data/");
-            string fullpath = System.IO.Path.GetFullPath(path);
+            //string path = Convert.ToString($@"data/");
+            //string fullpath = System.IO.Path.GetFullPath(path);
             string fl = $"{fullpath}{filename}.rtf";
             File.Create(fl);
+            var dir = new System.IO.DirectoryInfo(fullpath);
+            FileInfo[] files = dir.GetFiles("*.*");
+            listBox.ItemsSource = files;
+            listBox.DisplayMemberPath = "Name";
             //FileStream fileStream = new FileStream(System.IO.Path.GetFullPath(path), FileMode.Create);
             //TextRange range = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
             //range.Save(fileStream, DataFormats.Rtf);
@@ -63,8 +73,8 @@ namespace WpfApp5
 
         public void DeleteFile(string filename)
         {
-            string path = Convert.ToString($@"data/");
-            string fullpath = System.IO.Path.GetFullPath(path);
+            //string path = Convert.ToString($@"data/");
+            //string fullpath = System.IO.Path.GetFullPath(path);
             string fl = $"{fullpath}{filename}.rtf";
             File.Delete(fl);
         }
