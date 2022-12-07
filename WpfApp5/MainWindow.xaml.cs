@@ -91,7 +91,6 @@ namespace WpfApp5
                 {
                     range.Save(fs, DataFormats.Rtf);
                     fs.Close();
-
                 }
                     
             }
@@ -103,16 +102,17 @@ namespace WpfApp5
 
         public void DeleteFile(string filename)
         {
-            string fl = $"{fullpath}{filename}";
-            File.Delete(fl);
-            //var dir = new System.IO.DirectoryInfo(fullpath);
-            //FileInfo[] files = dir.GetFiles(filename);
-            //listBox.Items.Remove(files);
-            if (listBox.SelectedIndex >= 0)
+            try
             {
-                int Ind = listBox.SelectedIndex;
-                listBox.SelectedIndex = -1;
-                listBox.Items.RemoveAt(Ind);
+                string fl = $"{fullpath}{filename}";
+                File.Delete(fl);
+                var dir = new System.IO.DirectoryInfo(fullpath);
+                FileInfo[] files = dir.GetFiles("*.*");
+                listBox.ItemsSource = files;
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message);
             }
         }
 
