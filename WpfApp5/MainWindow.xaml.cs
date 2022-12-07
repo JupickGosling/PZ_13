@@ -62,12 +62,18 @@ namespace WpfApp5
             try 
             {
                 string fl = $"{fullpath}{filename}.rtf";
-                File.Create(fl);
+                //File.Create(fl);
+                using (FileStream fw = new FileStream(fl, FileMode.Create))
+                {
+                    byte[] info = new UTF8Encoding(true).GetBytes("");
+                    fw.Write(info, 0, info.Length);
+                    fw.Close();
+                }
                 var dir = new System.IO.DirectoryInfo(fullpath);
                 FileInfo[] files = dir.GetFiles("*.*");
                 listBox.ItemsSource = files;
                 listBox.DisplayMemberPath = "Name";
-                MessageBox.Show($"Файл {filename} был создан!");
+                MessageBox.Show($"Файл {filename} был создан!\n{fl}");
             }
             catch(Exception e)
             {
@@ -80,9 +86,15 @@ namespace WpfApp5
             try 
             {
                 string fl = $"{fullpath}{filename}";
-                FileStream fileStream = new FileStream(fl, FileMode.OpenOrCreate);
+                //FileStream fileStream = new FileStream(fl, FileMode.OpenOrCreate);
                 TextRange range = new TextRange(rtbEditor.Document.ContentStart, rtbEditor.Document.ContentEnd);
-                range.Save(fileStream, DataFormats.Rtf);
+                using (FileStream fs = new FileStream(fl, FileMode.OpenOrCreate))
+                {
+                    range.Save(fs, DataFormats.Rtf);
+                    fs.Close();
+
+                }
+                    
             }
             catch(Exception e)
             {
