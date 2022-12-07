@@ -99,15 +99,15 @@ namespace WpfApp5
 
         private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string[] file_list = Directory.GetFiles(fullpath, "*.*");
-            foreach (string filePath in file_list)
-            {
-                ListBoxItem itm = new ListBoxItem();
-                itm.Content = System.IO.Path.GetFileName(filePath);
-                itm.Tag = filePath;
-            }
-            ListBoxItem fi = (ListBoxItem)listBox.SelectedItem;
-            OpenFile(fi.ToString());
+            //var dir = new System.IO.DirectoryInfo(fullpath);
+            //FileInfo[] files = dir.GetFiles("*.*");
+            //ListBoxItem itm = new ListBoxItem();
+            //itm.Tag = files;
+            //OpenFile(itm.Tag.ToString());
+            var item = (sender as FrameworkElement).DataContext;
+            int index = listBox.Items.
+
+            MessageBox.Show(index.ToString());
         }
     }
 }
