@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,8 @@ namespace WpfApp5
     /// </summary>
     public partial class MainWindow : Window
     {
+        private object temp;
+        public int SelectionStart { get; set; }
         public static string path = Convert.ToString($@"data/");
         public static string fullpath = System.IO.Path.GetFullPath(path);
         public MainWindow()
@@ -145,9 +148,45 @@ namespace WpfApp5
             OpenFile(itm);
         }
 
-        //private void listBox_Selected(object sender, RoutedEventArgs e)
-        //{
+        private void rtbEditor_KeyDown(object sender, KeyEventArgs e)
+        {
+            UpdateCursorPosition();
 
-        //}
+        }
+
+        private void ChangedText()
+        {
+            //string text = "";
+            //if (rtbEditor.TextChanged)
+            //{
+            //    text = "Требуется сохранение";
+            //}
+            //lblChangedText.Text = "";
+        }
+
+        private void UpdateCursorPosition()
+        {
+            TextPointer tp1 = rtbEditor.Selection.Start.GetLineStartPosition(0);
+            TextPointer tp2 = rtbEditor.Selection.Start;
+
+            int column = tp1.GetOffsetToPosition(tp2);
+
+            int someBigNumber = int.MaxValue;
+            int lineMoved, currentLineNumber;
+            rtbEditor.Selection.Start.GetLineStartPosition(-someBigNumber, out lineMoved);
+            currentLineNumber = -lineMoved;
+
+            lblCursorPosition.Text = "Line: " + currentLineNumber.ToString() + " Column: " + column.ToString();
+        }
+
+        private void rtbEditor_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            temp = rtbEditor.Selection.GetPropertyValue(Inline.FontWeightProperty);
+            btnBold.IsChecked = (temp != DependencyProperty.UnsetValue) && (temp.Equals(FontWeights.Bold));
+            temp = rtbEditor.Selection.GetPropertyValue(Inline.FontStyleProperty);
+            btnItalic.IsChecked = (temp != DependencyProperty.UnsetValue) && (temp.Equals(FontStyles.Italic));
+            temp = rtbEditor.Selection.GetPropertyValue(Inline.TextDecorationsProperty);
+            btnUnderline.IsChecked = (temp != DependencyProperty.UnsetValue) && (temp.Equals(TextDecorations.Underline));
+        }
     }
 }

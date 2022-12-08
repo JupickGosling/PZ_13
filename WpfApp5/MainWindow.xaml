@@ -14,18 +14,14 @@
                     <MenuItem Header="Save Project" Click="saveFileMenuItem_Click"/>
                     <MenuItem Header="Delete Project" Click="delFileMenuItem_Click"/>
                 </MenuItem>
-                <MenuItem Header="Sample" >
-                    <MenuItem Header="Create Project"/>
-                    <MenuItem Header="Load Project"/>
-                </MenuItem>
                 <MenuItem Header="About">
                     <MenuItem Header="About the program"/>
                     <MenuItem Header="About the author"/>
                 </MenuItem>
             </Menu>
-            <WrapPanel MinHeight="20">
+            <ToolBar DockPanel.Dock="Top">
                 <ToggleButton Command="EditingCommands.ToggleBold" Name="btnBold">
-                    <Image Source="Images/bold.png" Width="15" Height="15" />
+                    <Image Source="Images/bold.png" Width="16" Height="16" />
                 </ToggleButton>
                 <ToggleButton Command="EditingCommands.ToggleItalic" Name="btnItalic">
                     <Image Source="Images/italic.png" Width="16" Height="16" />
@@ -33,10 +29,17 @@
                 <ToggleButton Command="EditingCommands.ToggleUnderline" Name="btnUnderline">
                     <Image Source="Images/underline.png" Width="16" Height="16" />
                 </ToggleButton>
-            </WrapPanel>
+            </ToolBar>
         </StackPanel>
-        <StatusBar DockPanel.Dock="Bottom" Margin="0,10,0,0" Width="800"/>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock Name="lblCursorPosition"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Name="lblChangedText"/>
+            </StatusBarItem>
+        </StatusBar>
         <ListBox x:Name="listBox" DockPanel.Dock="Left" Width="350" MouseDoubleClick="listBox_MouseDoubleClick"/>
-        <RichTextBox Name="rtbEditor" DockPanel.Dock="Right" Width="450" AcceptsReturn="True" AcceptsTab="True" SpellCheck.IsEnabled="True"/>
+        <RichTextBox Name="rtbEditor" DockPanel.Dock="Right" Width="450" AcceptsReturn="True" AcceptsTab="True" SpellCheck.IsEnabled="True" KeyDown="rtbEditor_KeyDown" SelectionChanged="rtbEditor_SelectionChanged" />
     </DockPanel>
 </Window>
